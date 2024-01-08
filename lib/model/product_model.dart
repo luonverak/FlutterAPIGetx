@@ -15,7 +15,7 @@ class ProductModel {
   String? name;
   String? detail;
   double? price;
-  int? dicount;
+  double? dicount;
   List<String>? preview;
   List<String>? color;
   Service? service;
@@ -23,7 +23,7 @@ class ProductModel {
   SpecificDetail? specificDetail;
   Category? category;
   double? rate;
-  Brand? brand;
+  String? brand;
   PublicDate? publicDate;
   CreateDate? createDate;
 
@@ -50,7 +50,7 @@ class ProductModel {
         name: json["name"],
         detail: json["detail"],
         price: json["price"]?.toDouble(),
-        dicount: json["dicount"],
+        dicount: json["dicount"]?.toDouble(),
         preview: json["preview"] == null
             ? []
             : List<String>.from(json["preview"]!.map((x) => x)),
@@ -64,7 +64,7 @@ class ProductModel {
             : SpecificDetail.fromJson(json["specific_detail"]),
         category: categoryValues.map[json["category"]]!,
         rate: json["rate"]?.toDouble(),
-        brand: brandValues.map[json["brand"]]!,
+        brand: json["brand"],
         publicDate: publicDateValues.map[json["public_date"]]!,
         createDate: createDateValues.map[json["create_date"]]!,
       );
@@ -83,16 +83,11 @@ class ProductModel {
         "specific_detail": specificDetail?.toJson(),
         "category": categoryValues.reverse[category],
         "rate": rate,
-        "brand": brandValues.reverse[brand],
+        "brand": brand,
         "public_date": publicDateValues.reverse[publicDate],
         "create_date": createDateValues.reverse[createDate],
       };
 }
-
-enum Brand { ANGELO, LODA, SODUTI }
-
-final brandValues = EnumValues(
-    {"Angelo": Brand.ANGELO, "Loda": Brand.LODA, "Soduti": Brand.SODUTI});
 
 enum Category { BOTH_CLOTHES, MEN_CLOTHES, WOMEN_CLOTHES }
 
@@ -146,9 +141,10 @@ class SpecificDetail {
       };
 }
 
-enum CareInstructions { HAND_WASH_ONLY, MACHINE_WASH }
+enum CareInstructions { DRY_CLEAN_ONLY, HAND_WASH_ONLY, MACHINE_WASH }
 
 final careInstructionsValues = EnumValues({
+  "Dry Clean Only": CareInstructions.DRY_CLEAN_ONLY,
   "Hand Wash Only": CareInstructions.HAND_WASH_ONLY,
   "Machine Wash": CareInstructions.MACHINE_WASH
 });
